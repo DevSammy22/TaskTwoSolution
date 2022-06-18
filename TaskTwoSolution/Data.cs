@@ -11,13 +11,10 @@ namespace TaskTwoSolution
         public static List<SKU> SkuData { get; set; } = new List<SKU>();
         public static void GetData()
         {
-            //C:\Users\hp\source\repos\TaskTwoSolution\TaskTwoSolution\warehouses-with-skus.csv
-            //C:\Users\hp\source\repos\TaskTwoSolution\TaskTwoSolution\Data\warehouses-with-skus.csv
-            //C:\Users\hp\source\repos\TaskTwoSolution\TaskTwoSolution\Data.cs
             var baseDir = Directory.GetCurrentDirectory();
-            var url = Path.Combine(baseDir, "warehouses-with-skus.csv");
+            var url = Path.Combine(baseDir, "../../../warehouses-with-skus.csv");
             using StreamReader sr = new StreamReader(url);
-            using StreamReader state = new StreamReader(Path.Combine(baseDir, "warehouses.csv"));
+            using StreamReader state = new StreamReader(Path.Combine(baseDir, "../../../warehouses.csv"));
 
             string line;
             List<string> row = new List<string>();
@@ -44,7 +41,6 @@ namespace TaskTwoSolution
                 row = line.Split(',').ToList();
                 List<Warehouse> listOfWarehouses = new List<Warehouse>();
                 int rowNum = 1;
-
                 foreach (var data in header)
                 {
                     int id = 0;
@@ -58,7 +54,7 @@ namespace TaskTwoSolution
                     });
                     rowNum++;
                 }
-
+                
                 SkuData.Add(new SKU
                 {
                     SkuId = row[0],
@@ -66,8 +62,7 @@ namespace TaskTwoSolution
                 });
             }
         }
-
-        public static long totalStockLeft(string state, string Sku)
+        public static long TotalStockLeft(string state, string Sku)
         {
             var getSku = SkuData.FirstOrDefault(x => x.SkuId == Sku);
             if (getSku != null)
@@ -75,7 +70,6 @@ namespace TaskTwoSolution
                 var data = getSku.Warehouses.Where(x => x.State.Contains(state)).Sum(x => x.StockLeft);
                 return data;
             }
-
             return 0;
         }
     }
