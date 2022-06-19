@@ -13,7 +13,7 @@ namespace TaskTwoSolution
         static void Main(string[] args)
         {
             Data.GetData();
-            Console.WriteLine(Data.TotalStockLeft("RI", "100448"));
+            Console.WriteLine(Data.TotalStockLeft("IL", "100448"));
         }
     }
 }

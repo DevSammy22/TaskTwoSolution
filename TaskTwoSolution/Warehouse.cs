@@ -6,7 +6,7 @@ namespace TaskTwoSolution
 {
     public class Warehouse
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public int StockLeft { get; set; }
         public List<string> State { get; set; }
     }

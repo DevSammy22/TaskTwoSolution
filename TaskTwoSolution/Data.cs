@@ -11,20 +11,20 @@ namespace TaskTwoSolution
         public static List<SKU> SkuData { get; set; } = new List<SKU>();
         public static void GetData()
         {
-            var baseDir = Directory.GetCurrentDirectory();
-            var url = Path.Combine(baseDir, "../../../warehouses-with-skus.csv");
-            using StreamReader sr = new StreamReader(url);
-            using StreamReader state = new StreamReader(Path.Combine(baseDir, "../../../warehouses.csv"));
+            string baseDir = Directory.GetCurrentDirectory();
+            string path1 = Path.Combine(baseDir, "../../../warehouses-with-skus.csv");
+            using StreamReader stream = new StreamReader(path1);
+            string path2 = Path.Combine(baseDir, "../../../warehouses.csv");
+            using StreamReader state = new StreamReader(path2);
 
             string line;
             List<string> row = new List<string>();
             List<State> stateData = new List<State>();
 
-            var header = sr.ReadLine().Split(',').ToList();
+            List<string> warehouseWithSkuHeader = stream.ReadLine().Split(',').ToList();
             var stateHeader = state.ReadLine().Split(',').ToList();
-            header.RemoveAt(0);
-            stateHeader.ForEach(x => stateData.Add(new
-                State
+            warehouseWithSkuHeader.RemoveAt(0);
+            stateHeader.ForEach(x => stateData.Add(new State
             { Id = x, States = new List<string>() }));
 
             while ((line = state.ReadLine()) != null)
@@ -35,26 +35,22 @@ namespace TaskTwoSolution
                     stateData[i].States.Add(row[i]);
                 }
             }
-
-            while ((line = sr.ReadLine()) != null)
+            while ((line = stream.ReadLine()) != null)
             {
                 row = line.Split(',').ToList();
                 List<Warehouse> listOfWarehouses = new List<Warehouse>();
                 int rowNum = 1;
-                foreach (var data in header)
+                foreach (string data in warehouseWithSkuHeader)
                 {
-                    int id = 0;
-                    int.TryParse(data, out id);
+                    //int.TryParse(data, out int id);
                     listOfWarehouses.Add(new Warehouse
                     {
-
-                        Id = id,
+                        Id = data,
                         StockLeft = int.Parse(row[rowNum]),
                         State = stateData.First(x => x.Id == data).States
                     });
                     rowNum++;
                 }
-                
                 SkuData.Add(new SKU
                 {
                     SkuId = row[0],
@@ -62,9 +58,10 @@ namespace TaskTwoSolution
                 });
             }
         }
+
         public static long TotalStockLeft(string state, string Sku)
         {
-            var getSku = SkuData.FirstOrDefault(x => x.SkuId == Sku);
+            SKU getSku = SkuData.FirstOrDefault(x => x.SkuId == Sku);
             if (getSku != null)
             {
                 var data = getSku.Warehouses.Where(x => x.State.Contains(state)).Sum(x => x.StockLeft);
