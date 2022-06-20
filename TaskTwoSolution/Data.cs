@@ -42,7 +42,6 @@ namespace TaskTwoSolution
                 int rowNum = 1;
                 foreach (string data in warehouseWithSkuHeader)
                 {
-                    //int.TryParse(data, out int id);
                     listOfWarehouses.Add(new Warehouse
                     {
                         Id = data,
